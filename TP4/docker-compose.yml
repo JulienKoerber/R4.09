@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  monservice:
+    image: nginx:latest
+    ports:
+      - "92:80"
+    networks:
+      - mynetwork
+    volumes:
+      - monvolume:/usr/share/nginx/html
+networks:
+  mynetwork:
+    driver: bridge
+volumes:
+  monvolume:
+    driver: local
