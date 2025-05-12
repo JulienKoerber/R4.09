@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  service1:
+    image: alpine
+    command: sh -c "echo 'Bonjour depuis Docker Compose !' > /shared1/texte.txt"
+    volumes:
+      - shared1:/shared1
+    networks:
+      - monreseau
+
+  service2:
+    image: alpine
+    depends_on:
+      - service1
+    command: sh -c "cp -f /shared1/texte.txt /shared2/index.html"
+    volumes:
+      - shared1:/shared1
+      - shared2:/shared2
+    networks:
+      - monreseau
+
+  serveur_web:
+    image: nginx
+    depends_on:
+      - service2
+    ports:
+      - "8080:80"
+    volumes:
+      - shared2:/usr/share/nginx/html
+    networks:
+      - monreseau
+
+volumes:
+  shared1:
+  shared2:
+
+networks:
+  monreseau:

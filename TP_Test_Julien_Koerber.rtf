@@ -1,0 +1,131 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww28840\viewh17760\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 TP test R4.09\
+Julien Koerber\
+\
+
+\fs32 Exercice1:\
+
+\fs24 \
+
+\fs28 1- Charger une image Debian de version 10:13 dans le cache local\
+
+\fs24 	docker pull debian:10.13\
+\
+
+\fs28 2- Utiliser l\'92image de la derni\'e8re version de Debian pour d\'e9marrer un conteneur ex\'e9cutant la commande \'ab\'a0du -h /etc\'a0\'bb\
+
+\fs24 	docker run \'97rm debian:latest du -h /etc\
+\
+
+\fs28 3- d\'e9marrer une instance Debian:latest avec un terminal actif\
+
+\fs24 	docker run -it debian:latest /bin/bash\
+\
+\
+
+\fs32 Exercice2:\
+
+\fs24 \
+
+\fs28 1- R\'e9cup\'e9rer le hostname de votre conteneur actif\
+
+\fs24 	docker exec alpine hostname\
+\
+
+\fs28 2- Lancer le conteneur avec la commande sleep infinity\
+
+\fs24 	docker run -it alpine sleep infinity\
+\
+
+\fs28 3- Lister l\'92ensemble des conteneurs ayant \'e9t\'e9 lanc\'e9s, actifs ou non
+\fs24 \
+	docker ps -a\
+\
+\
+
+\fs32 Exercice3:\
+
+\fs24 \
+
+\fs28 1- Dockerfile qui permet de mettre \'e0 jour le syst\'e8me et installer les logiciels curl et nano\
+
+\fs24 \
+FROM debian:latest\
+\
+RUN apt-get update && \\\
+    apt-get install -y curl nano\
+\
+\
+
+\fs28 2-  J\'92ajoute la ligne suivante dans le Dockerfile pour lancer l\'92\'e9dition d\'92un fichier index.html\
+
+\fs24 \
+CMD nano index.html && echo "Contenu de index.html :" && cat index.html\
+\
+
+\fs28 Voici comment builder l\'92image:\
+
+\fs24 	docker build -t exo3-image -f Dockerfile_exo3.yaml .\
+\
+
+\fs28 Voici comment ex\'e9cuter le conteneur:\
+
+\fs24 	docker run -it exo3-image\
+\
+\
+\
+
+\fs32 Exercice4:\
+
+\fs24 \
+
+\fs28 Ecrire le Dockerfile permettant \'e0 partir d\'92une image nains de:\
+1- Monter un volume non nomm\'e9 sur le r\'e9pertoire /usr/share/nginx/html\
+2- copier le contenu de fichier.zip dans ce r\'e9pertoire\
+3- de d\'e9compresser le contenu de ce fichier
+\fs24 \
+\
+FROM nginx:latest\
+\
+COPY fichier.zip /usr/share/nginx/html/\
+\
+RUN apt-get update && \\\
+    apt-get install -y unzip && \\\
+    unzip /usr/share/nginx/html/fichier.zip -d /usr/share/nginx/html/ && \\\
+    rm /usr/share/nginx/html/fichier.zip\
+\
+\
+\
+
+\fs32 Exercice5:\
+\
+
+\fs28 Ecrire le fichier Docker compose qui va permettre de d\'e9ployer les 3 services suivants:\
+\
+1- Un service permettant d\'92\'e9crire une phrase dans un fichier texte\
+\
+\
+2- Un service copiant le fichier d\'92un volume \'e0 un autre. Le fichier sera aussi renomm\'e9 en index.html\
+La copie sera forc\'e9e pour \'e9craser tout fichier portant le m\'eame nom dans l\'92autre r\'e9pertoire\
+\
+\
+3- Un service permettant d\'92afficher ce texte au travers d\'92un service web. \
+Dans ce service, le volume partag\'e9 sera mont\'e9 sous le r\'e9pertoire /usr/share/nginx/html\
+\
+\
+Vous ajouterez dans votre docker-compose un r\'e9seaux sp\'e9cifique, et deux volumes, un partag\'e9 entre le service 1 et 2 et le second partag\'e9 entre le service 2 et 3. Ce dernier devra voir son port 80 expos\'e9\
+
+\fs24 \
+\
+\
+\
+\
+\
+\
+}
